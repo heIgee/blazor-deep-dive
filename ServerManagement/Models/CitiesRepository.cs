@@ -2,7 +2,7 @@
 
 public class CitiesRepository
 {
-    private static List<string> cities =
+    private static readonly List<string> cities =
     [
         "Tokyo",
         "Berlin",

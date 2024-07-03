@@ -1,0 +1,38 @@
+﻿<div class="container-fluid p-0">
+    <div class="row g-0">
+        <div class="col">
+            <button 
+                class="btn btn-secondary w-100 rounded-0 text-center px-0" 
+                @onclick=@(() => FilterByCity(""))>
+                All
+            </button>
+        </div>
+    </div>
+    <div class="row g-0 my-2">
+        @foreach (var city in Cities)
+        {
+            <CityComponent 
+                City="@city" 
+                IsSelected="@SelectedCity.Equals(city, StringComparison.OrdinalIgnoreCase)" 
+                OnCityChanged="FilterByCity"
+            />
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public List<string> Cities { get; set; } = CitiesRepository.Cities;
+
+    [Parameter]
+    public EventCallback<string> OnCityChanged { get; set; }
+
+    [Parameter]
+    public string SelectedCity { get; set; } = string.Empty;
+
+    private async Task FilterByCity(string city)
+    {
+        SelectedCity = city;
+        await OnCityChanged.InvokeAsync(SelectedCity);
+    }
+}

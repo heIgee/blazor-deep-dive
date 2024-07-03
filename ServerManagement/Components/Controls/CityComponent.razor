@@ -1,0 +1,26 @@
+﻿<div class="col text-center @(IsSelected ? "bg-secondary" : "")">
+    <img src=@($"images/{City}.png") alt="" class="card-img-top" style="max-width: 6rem;" />
+    <div class="card-body">
+        <button
+            class="btn btn-dark rounded-0 text-center" 
+                @onclick=@(() => FilterByCity(City))>
+            @City
+        </button>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public bool IsSelected { get; set; }
+
+    [Parameter]
+    public string City { get; set; } = string.Empty;
+
+    [Parameter]
+    public EventCallback<string> OnCityChanged { get; set; }
+
+    private async Task FilterByCity(string city) 
+    {
+        await OnCityChanged.InvokeAsync(city);
+    }
+}

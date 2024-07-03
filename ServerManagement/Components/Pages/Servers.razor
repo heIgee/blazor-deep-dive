@@ -7,64 +7,27 @@
 <h3>Server page</h3>
 <br />
 
-<div class="container-fluid p-0">
-    <div class="row g-0">
-        <div class="col">
-            <button 
-                class="btn btn-secondary w-100 rounded-0 text-center px-0" 
-                @onclick=@(() => FilterByCity(""))>
-                All
-            </button>
-        </div>
-    </div>
-    <div class="row g-0 my-2">
-        @foreach (var city in cities)
-        {
-        <div class="col text-center @(selectedCity.Equals(city, StringComparison.OrdinalIgnoreCase) ? "bg-secondary" : "")">
-            <img src=@($"images/{city}.png") alt="" class="card-img-top" style="max-width: 6rem;" />
-            <div class="card-body">
-                <button
-                    class="btn btn-dark rounded-0 text-center" 
-                    @onclick=@(() => FilterByCity(@city))>
-                @city
-                </button>
-            </div>
-        </div>
-        }
-    </div>
-</div>
+<CityListComponent SelectedCity="@_selectedCity" OnCityChanged="FilterByCity"/>
 
-<div class="input-group w-50 my-4">
-    <input type="text" class="form-control" placeholder="Search by name..." id="" 
-        @bind-value="serverFilter" 
-        @bind-value:event="oninput"
-        @bind-value:after="() => SearchServer()" 
-        />
-    @* <button class="btn btn-outline-secondary" id="btn-search">Search</button> *@
-</div>
+<SearchBarComponent OnFilterChanged="SearchServer"/>
 
-<ServerListComponent @rendermode="InteractiveServer" SelectedCity="@selectedCity"/>
-
-@* <ServerComponent @rendermode="InteractiveServer"/>
-<ServerComponent/> *@
+<ServerListComponent ServerFilter="@_serverFilter" SelectedCity="@_selectedCity"/>
 
 <a href="/servers/add" class="text-white btn btn-info">Add Server</a>
 
 @code {
-    private List<string> cities = CitiesRepository.Cities;
-
-    private string selectedCity = string.Empty;
-    private string serverFilter = string.Empty;
+    private string _selectedCity = string.Empty;
+    private string _serverFilter = string.Empty;
 
     private void FilterByCity(string city) 
     {
-        selectedCity = city;
+        _selectedCity = city;
     }
 
-
-    private void SearchServer()
+    private void SearchServer(string filter)
     {
         // servers = ServersRepository.FindByName(serverFilter);
-        selectedCity = string.Empty;
+        _serverFilter = filter;
+        _selectedCity = string.Empty;
     }
 }

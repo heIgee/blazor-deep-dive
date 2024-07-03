@@ -1,22 +1,22 @@
 ﻿
 @if (Server is not null) 
 {
-<h3 class="@(Server.IsOnline ? "text-success" : "text-danger")">
-    @Server.Name in @Server.City
-</h3>
-<button class="btn btn-dark" @onclick="ToggleStatus">Toggle</button>
+    <li @key="Server.Id" class="@(Server.IsOnline ? "text-success" : "text-danger")">
+        <a href="/servers/@Server.Id">@Server.Name</a> in @Server.City
+    </li>   
+    <button type="submit" class="btn btn-sm btn-outline-danger" @onclick="() => DeleteServer(Server.Id)">❌</button>
 }
 
 @code {
+    [Parameter]
+    public Server? Server { get; set; }
 
-    private Server? Server { get; set; } = new Server(0, "AWS", "Toronto");
+    [Parameter]
+    public EventCallback OnServerDeleted { get; set; }
 
-    private void ToggleStatus() 
+    private async Task DeleteServer(int serverId)
     {
-        if (Server is not null) 
-        {
-            Server.IsOnline = !Server.IsOnline;
-        }
+        ServersRepository.Delete(serverId);
+        await OnServerDeleted.InvokeAsync();
     }
-
 }
