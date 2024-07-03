@@ -1,0 +1,22 @@
+﻿
+@if (Server is not null) 
+{
+<h3 class="@(Server.IsOnline ? "text-success" : "text-danger")">
+    @Server.Name in @Server.City
+</h3>
+<button class="btn btn-dark" @onclick="ToggleStatus">Toggle</button>
+}
+
+@code {
+
+    private Server? Server { get; set; } = new Server(0, "AWS", "Toronto");
+
+    private void ToggleStatus() 
+    {
+        if (Server is not null) 
+        {
+            Server.IsOnline = !Server.IsOnline;
+        }
+    }
+
+}

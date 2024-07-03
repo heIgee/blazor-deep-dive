@@ -1,0 +1,36 @@
+﻿<ul>
+    <Virtualize Items="servers" Context="server">
+        <li @key="server.Id" class="@(server.IsOnline ? "text-success" : "text-danger")">
+            <a href="/servers/@server.Id">@server.Name</a> in @server.City
+        </li>   
+        @* <EditForm Model="server" FormName=@($"formServer{server.Id})") OnValidSubmit="() => DeleteServer(server.Id)"> *@
+            <button type="submit" class="btn btn-sm btn-outline-danger" @onclick="() => DeleteServer(server.Id)">❌</button>
+        @* </EditForm> *@
+    </Virtualize>
+</ul>
+
+@code {
+
+    [Parameter]
+    public string? SelectedCity { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        RefreshServerList();
+    }
+
+    private void RefreshServerList() 
+    {
+        servers = string.IsNullOrEmpty(SelectedCity)
+            ? ServersRepository.FindAll()
+            : ServersRepository.FindByCity(SelectedCity);
+    }
+
+    private List<Server> servers = new();
+
+    private void DeleteServer(int serverId)
+    {
+        ServersRepository.Delete(serverId);
+        RefreshServerList();
+    }
+}

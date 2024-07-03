@@ -1,0 +1,54 @@
+﻿@page "/todo"
+
+@rendermode InteractiveServer
+
+<h3>TodoList</h3>
+
+<button class="btn btn-primary my-3 py-1" @onclick="NewTask">New</button>
+
+<div class="container ms-0 px-0">
+    <Virtualize Items="tasks" Context="task">
+        <div @key="task.Id" class="row g-0 mb-3">
+            <div class="col-12 col-md-8">
+                <div class="input-group">
+                    <div class="input-group-text">
+                        <input type="checkbox" 
+                            @bind-value="task.IsDone"
+                            checked="@task.IsDone"
+                            style="transform: scale(1.5)" 
+                        />
+                    </div>
+                    <input type="text" 
+                        class="form-control @(task.IsDone ? "text-decoration-line-through bg-light" : "")" 
+                        disabled="@(task.IsDone)" 
+                        @bind-value="task.name" 
+                    />
+                </div>
+            </div>
+            @if (task.IsDone)
+            {
+                <div class="col-12 col-md-4">
+                    <span class="d-inline-block py-1 mt-1 mt-md-0 ms-3 text-muted">completed @task.DateCompleted</span>
+                    <button class="btn btn-outline-danger py-0 px-1 ms-2" @onclick="() => RemoveTask(task)" >❌</button>
+                </div>
+            }
+        </div>
+    </Virtualize>
+</div>
+
+
+@code {
+    private List<TodoItem> tasks = TodoItemRepository.FindAll();
+
+    private void NewTask() 
+    {
+        TodoItemRepository.AddNew();
+        tasks = TodoItemRepository.FindAll();
+    }
+
+    private void RemoveTask(TodoItem task)
+    {
+        TodoItemRepository.Remove(task);
+        tasks = TodoItemRepository.FindAll();
+    }
+}

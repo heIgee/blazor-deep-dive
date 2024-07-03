@@ -1,0 +1,44 @@
+﻿@page "/servers/add"
+
+@rendermode InteractiveServer
+
+@inject NavigationManager NavigationManager
+
+<div class="container">
+    @* FormName="formServer" // no need with interactivity *@
+    <EditForm Model="Server" OnValidSubmit="Submit">
+        <DataAnnotationsValidator/>
+        <ValidationSummary/>
+
+        <InputNumber id="serverName" class="form-control" @bind-Value="Server.Id" hidden/>
+        <div class="mb-3">
+            <label for="serverName" class="form-label">Server Name</label>
+            <InputText id="serverName" class="form-control" @bind-Value="Server.Name"/>
+            <ValidationMessage For="() => Server.Name" />
+        </div>
+        <div class="mb-3">
+            <label for="serverCity" class="form-label">Server City</label>
+            <InputText id="serverCity" class="form-control" @bind-Value="Server.City"/>
+            <ValidationMessage For="() => Server.City" />
+        </div>
+        <div class="mb-3 form-check">
+            <InputCheckbox id="serverIsOnline" class="form-check-input" @bind-Value="Server.IsOnline"/>
+            <label for="serverIsOnline" class="form-check-label">Is Online</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Add</button>
+        <a href="/servers" class="btn btn-secondary">Back</a>
+    </EditForm>
+</div>
+
+@code {
+    // [SupplyParameterFromForm] // no need with interactivity
+    private Server Server { get; set; } = new(0, "", "");
+
+    private void Submit() 
+    {
+        ServersRepository.Add(Server);
+
+        NavigationManager.NavigateTo("/servers");
+    }
+}
+

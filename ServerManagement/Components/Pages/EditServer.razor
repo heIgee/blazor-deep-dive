@@ -1,0 +1,59 @@
+﻿@page "/servers/{id:int}"
+
+@inject NavigationManager NavigationManager
+
+@if (Server is null)
+{
+    <h3>Not found!</h3>
+}
+
+else 
+{
+    <div class="container">
+        <EditForm Model="Server" FormName="formServer" OnValidSubmit="Submit">
+            <DataAnnotationsValidator/>
+            @* <ValidationSummary/> *@
+
+            <InputNumber id="serverName" class="form-control" @bind-Value="Server.Id" hidden/>
+            <div class="mb-3">
+                <label for="serverName" class="form-label">Server Name</label>
+                <InputText id="serverName" class="form-control" @bind-Value="Server.Name"/>
+                <ValidationMessage For="() => Server.Name" />
+            </div>
+            <div class="mb-3">
+                <label for="serverCity" class="form-label">Server City</label>
+                <InputText id="serverCity" class="form-control" @bind-Value="Server.City"/>
+                <ValidationMessage For="() => Server.City" />
+            </div>
+            <div class="mb-3 form-check">
+                <InputCheckbox id="serverIsOnline" class="form-check-input" @bind-Value="Server.IsOnline"/>
+                <label for="serverIsOnline" class="form-check-label">Is Online</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+            <a href="/servers" class="btn btn-secondary">Back</a>
+        </EditForm>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    [SupplyParameterFromForm]
+    private Server? Server { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        Server ??= ServersRepository.FindById(Id);
+    }
+
+    private void Submit() 
+    {
+        if (Server is not null) 
+        {
+            ServersRepository.Update(Server.Id, Server);
+        }
+
+        NavigationManager.NavigateTo("/servers");
+    }
+}
