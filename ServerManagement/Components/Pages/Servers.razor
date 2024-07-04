@@ -4,14 +4,15 @@
 @rendermode InteractiveServer
 
 @* @inject NavigationManager NavigationManager *@
-<h3>Server page</h3>
-<br />
+<h3>Server Page</h3>
 
 <CityListComponent SelectedCity="@_selectedCity" OnCityChanged="FilterByCity"/>
 
-<SearchBarComponent OnFilterChanged="SearchServer"/>
+<SearchBarComponent ServerFilter="@_serverFilter" OnFilterChanged="SearchServer"/>
 
-<ServerListComponent ServerFilter="@_serverFilter" SelectedCity="@_selectedCity"/>
+<CascadingValue Name="SelectedCity" Value="@_selectedCity">
+    <ServerListComponent SelectedCity="@_selectedCity" ServerFilter="@_serverFilter"/>
+</CascadingValue>
 
 <a href="/servers/add" class="text-white btn btn-info">Add Server</a>
 
@@ -22,11 +23,11 @@
     private void FilterByCity(string city) 
     {
         _selectedCity = city;
+        _serverFilter = string.Empty;
     }
 
     private void SearchServer(string filter)
     {
-        // servers = ServersRepository.FindByName(serverFilter);
         _serverFilter = filter;
         _selectedCity = string.Empty;
     }

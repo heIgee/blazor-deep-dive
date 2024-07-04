@@ -1,13 +1,43 @@
 ﻿
+
 @if (Server is not null) 
 {
-    <li @key="Server.Id" class="@(Server.IsOnline ? "text-success" : "text-danger")">
-        <a href="/servers/@Server.Id">@Server.Name</a> in @Server.City
-    </li>   
-    <button type="submit" class="btn btn-sm btn-outline-danger" @onclick="() => DeleteServer(Server.Id)">❌</button>
+    <tr @key="Server.Id" class="@(Server.IsOnline ? "text-success" : "text-danger")" style="background-color: @GetColor()">
+
+        <td>
+            <a href="/servers/@Server.Id">@Server.Name</a>
+        </td>
+
+        <td>
+            @Server.City
+        </td>
+
+        <td>
+        @if (Server.IsOnline)
+        {
+            <span>@(Random.Shared.Next(0, 1488)) people online</span>
+            <button 
+                class="btn d-inline me-2 btn-sm btn-outline-warning" 
+                @onclick="@(() => Server.IsOnline = false)">Stop</button>
+        }
+        else
+        {
+            <button 
+                class="btn d-inline me-2 btn-sm btn-outline-info" 
+                @onclick="@(() => Server.IsOnline = true)">Run</button>
+        }
+        </td>
+
+        <td>
+            <button type="submit" class="btn btn-sm btn-outline-danger" @onclick="() => DeleteServer(Server.Id)">❌</button>
+        </td>
+    </tr>   
 }
 
 @code {
+    [CascadingParameter(Name = "SelectedCity")]
+    public string? SelectedCity { get; set; }
+
     [Parameter]
     public Server? Server { get; set; }
 
@@ -18,5 +48,20 @@
     {
         ServersRepository.Delete(serverId);
         await OnServerDeleted.InvokeAsync();
+    }
+
+    private string GetColor()
+    {
+        return SelectedCity switch 
+        {
+            "Tokyo" => "#FF000040",      // Red with 25% opacity
+            "Berlin" => "#0000FF40",     // Blue with 25% opacity
+            "London" => "#00800040",     // Green with 25% opacity
+            "Sydney" => "#FFFF0040",     // Yellow with 25% opacity
+            "Paris" => "#80008040",      // Purple with 25% opacity
+            "Singapore" => "#FFA50040",  // Orange with 25% opacity
+            "Shanghai" => "#FFC0CB40",   // Pink with 25% opacity
+            _ => "#00000000"             // Transparent (no match)
+        };
     }
 }

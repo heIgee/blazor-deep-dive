@@ -1,1 +1,2 @@
-*.razor linguist-language=Razor
+*.razor linguist-detectable
+*.razor linguist-language=C#

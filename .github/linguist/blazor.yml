@@ -1,0 +1,9 @@
+type: programming
+color: "#512be4"
+extensions:
+  - ".razor"
+tm_scope: text.html.cshtml
+ace_mode: razor
+codemirror_mode: htmlmixed
+codemirror_mime_type: text/x-cshtml
+language_id: 479039817
