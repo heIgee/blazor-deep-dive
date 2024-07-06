@@ -3,6 +3,7 @@
 @rendermode InteractiveServer
 
 @inject NavigationManager NavigationManager
+@inject IServerEFCoreRepository ServerRepository
 
 <div class="container">
     @* FormName="formServer" // no need with interactivity *@
@@ -36,7 +37,7 @@
 
     private void Submit() 
     {
-        ServersRepository.Add(Server);
+        ServerRepository.Add(Server);
         NavigationManager.NavigateTo($"/servers/{Uri.EscapeDataString(Server.City)}");
     }
 }

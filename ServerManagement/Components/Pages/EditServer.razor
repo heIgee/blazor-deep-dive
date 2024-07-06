@@ -1,6 +1,7 @@
 ﻿@page "/servers/edit/{id:int}"
 
 @inject NavigationManager NavigationManager
+@inject IServerEFCoreRepository ServerRepository
 
 @if (Server is null)
 {
@@ -43,14 +44,14 @@ else
 
     protected override void OnParametersSet()
     {
-        Server ??= ServersRepository.FindById(Id);
+        Server ??= ServerRepository.FindById(Id);
     }
 
     private void Submit() 
     {
         if (Server is not null) 
         {
-            ServersRepository.Update(Server.Id, Server);
+            ServerRepository.Update(Server.Id, Server);
             NavigationManager.NavigateTo($"/servers/{Uri.EscapeDataString(Server.City)}");
         }
 

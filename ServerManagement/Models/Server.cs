@@ -12,9 +12,18 @@ namespace ServerManagement.Models
         [Required]
         public string City { get; set; } = string.Empty;
 
+        public bool IsOnline { get; set; }
+        //public string Status => IsOnline ? "ONLINE" : "OFFLINE";
+
         private readonly bool _coinFlip;
 
+        public Server()
+        {
+            
+        }
+
         //public Server() { } // I do not have a right to have multiple ctors (Blazor said so)
+        // for static ssr form
 
         public Server(int id, string name, string city)
         {
@@ -34,7 +43,6 @@ namespace ServerManagement.Models
         //    IsOnline = isOnline;
         //}
 
-        public bool IsOnline { get; set; }
-        //public string Status => IsOnline ? "ONLINE" : "OFFLINE";
+
     }
 }

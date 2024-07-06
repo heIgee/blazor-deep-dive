@@ -1,8 +1,6 @@
-﻿using System.Xml.Linq;
+﻿namespace ServerManagement.Models;
 
-namespace ServerManagement.Models;
-
-public static class ServersRepository
+public static class ServerRepository
 {
     private static readonly List<Server> servers =
     [

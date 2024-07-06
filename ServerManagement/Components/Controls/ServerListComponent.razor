@@ -3,6 +3,7 @@
         <ServerComponent Server="server" OnServerDeleted="RefreshServerList"/>
     </Virtualize>
 </ul> *@
+@inject IServerEFCoreRepository ServerRepository
 
 <table class="table table-striped">
 
@@ -43,22 +44,22 @@
 
         if (!string.IsNullOrEmpty(ServerFilter))
         {
-            servers = ServersRepository.FindByName(ServerFilter);
+            servers = ServerRepository.FindByName(ServerFilter);
             return;
         }
 
         if (!string.IsNullOrEmpty(SelectedCity))
         {
-            servers = ServersRepository.FindByCity(SelectedCity);
+            servers = ServerRepository.FindByCity(SelectedCity);
             return;
         }
 
-        servers = ServersRepository.FindAll();
+        servers = ServerRepository.FindAll();
     }
 
     private void DeleteServer(int serverId)
     {
-        ServersRepository.Delete(serverId);
+        ServerRepository.Delete(serverId);
         RefreshServerList();
     }
 }

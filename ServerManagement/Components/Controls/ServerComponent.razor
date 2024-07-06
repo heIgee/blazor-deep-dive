@@ -1,4 +1,6 @@
-﻿@if (Server is not null) 
+﻿@inject IServerEFCoreRepository ServerRepository
+
+@if (Server is not null) 
 {
     <tr @key="Server.Id" class="@(Server.IsOnline ? "text-success" : "text-danger")" style="background-color: @GetColor()">
 
@@ -44,7 +46,7 @@
 
     private async Task DeleteServer(int serverId)
     {
-        ServersRepository.Delete(serverId);
+        ServerRepository.Delete(serverId);
         await OnServerDeleted.InvokeAsync();
     }
 
