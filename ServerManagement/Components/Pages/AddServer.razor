@@ -37,8 +37,7 @@
     private void Submit() 
     {
         ServersRepository.Add(Server);
-
-        NavigationManager.NavigateTo("/servers");
+        NavigationManager.NavigateTo($"/servers/{Uri.EscapeDataString(Server.City)}");
     }
 }
 

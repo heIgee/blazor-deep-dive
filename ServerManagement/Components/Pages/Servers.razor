@@ -1,9 +1,12 @@
-﻿@page "/servers"
+﻿@* @page "/servers" *@
+@page "/servers/{CityName?}"
+
 @attribute [StreamRendering]
 
 @rendermode InteractiveServer
 
-@* @inject NavigationManager NavigationManager *@
+@inject NavigationManager NavigationManager
+
 <h3>Server Page</h3>
 
 <CityListComponent SelectedCity="@_selectedCity" OnCityChanged="FilterByCity"/>
@@ -17,6 +20,9 @@
 <a href="/servers/add" class="text-white btn btn-info">Add Server</a>
 
 @code {
+    [Parameter]
+    public string? CityName { get; set; }
+
     private string _selectedCity = string.Empty;
     private string _serverFilter = string.Empty;
 
@@ -24,11 +30,22 @@
     {
         _selectedCity = city;
         _serverFilter = string.Empty;
+        NavigationManager.NavigateTo($"/servers/{Uri.EscapeDataString(city)}");
     }
 
     private void SearchServer(string filter)
     {
         _serverFilter = filter;
         _selectedCity = string.Empty;
+        NavigationManager.NavigateTo("/servers");
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender && !string.IsNullOrEmpty(CityName))
+        {
+            _selectedCity = CityName;
+            StateHasChanged();
+        }
     }
 }

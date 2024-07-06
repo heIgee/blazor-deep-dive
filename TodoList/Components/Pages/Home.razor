@@ -1,7 +1,20 @@
 ﻿@page "/"
 
+@rendermode InteractiveServer
+
 <PageTitle>Home</PageTitle>
 
 <h1>Hello, world!</h1>
 
-Welcome to your new app.
+<HeavyRequestComponent  ClickParam="_clickParam"/>
+
+<button class="btn btn-sm btn-secondary" @onclick="Increment">Request</button>
+
+@code {
+    private int _clickParam;
+
+    private void Increment()
+    {
+        _clickParam++;
+    }
+}

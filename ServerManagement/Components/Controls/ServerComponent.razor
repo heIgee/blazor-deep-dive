@@ -1,11 +1,9 @@
-﻿
-
-@if (Server is not null) 
+﻿@if (Server is not null) 
 {
     <tr @key="Server.Id" class="@(Server.IsOnline ? "text-success" : "text-danger")" style="background-color: @GetColor()">
 
         <td>
-            <a href="/servers/@Server.Id">@Server.Name</a>
+            <a href="/servers/edit/@Server.Id">@Server.Name</a>
         </td>
 
         <td>
@@ -52,15 +50,15 @@
 
     private string GetColor()
     {
-        return SelectedCity switch 
+        return SelectedCity?.ToLower() switch 
         {
-            "Tokyo" => "#FF000040",      // Red with 25% opacity
-            "Berlin" => "#0000FF40",     // Blue with 25% opacity
-            "London" => "#00800040",     // Green with 25% opacity
-            "Sydney" => "#FFFF0040",     // Yellow with 25% opacity
-            "Paris" => "#80008040",      // Purple with 25% opacity
-            "Singapore" => "#FFA50040",  // Orange with 25% opacity
-            "Shanghai" => "#FFC0CB40",   // Pink with 25% opacity
+            "tokyo" => "#FF000040",      // Red with 25% opacity
+            "berlin" => "#0000FF40",     // Blue with 25% opacity
+            "london" => "#00800040",     // Green with 25% opacity
+            "sydney" => "#FFFF0040",     // Yellow with 25% opacity
+            "paris" => "#80008040",      // Purple with 25% opacity
+            "singapore" => "#FFA50040",  // Orange with 25% opacity
+            "shanghai" => "#FFC0CB40",   // Pink with 25% opacity
             _ => "#00000000"             // Transparent (no match)
         };
     }
